@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:55642",
 "RedirectUrl": "",
 "LaunchCommand": "npm run dev",
-"WorkingDirectory": "C:\\Users\\amkbh\\OneDrive\\Documents\\College\\TY\\SEM6\\Lab\\Web_Desktop_App_Development\\Practice_Projects\\EventRSVPApp\\EventRSVPApp.Server\\..\\eventrsvpapp.client",
+"WorkingDirectory": "D:\\Final_Projects\\RSVP\\EventRSVPApp.Server\\..\\eventrsvpapp.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }

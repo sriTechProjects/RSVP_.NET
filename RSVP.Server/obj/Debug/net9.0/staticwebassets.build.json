@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Hash": "9HD/35WfUeGDyZgWkEI9/Db11uQ7zTPg+bnu6sOQrZ0=",
+  "Source": "RSVP.Server",
+  "BasePath": "_content/RSVP.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "D:\\Final_Projects\\RSVP2\\RSVP\\rsvp.client\\rsvp.client.esproj",
+      "Version": 2,
+      "Source": "rsvp.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

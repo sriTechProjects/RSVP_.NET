@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using EventRSVPApp.Server.Data;
+using EventRSVPApp.Server.Models;
 
 namespace EventRSVPApp.Server
 {
@@ -8,9 +12,27 @@ namespace EventRSVPApp.Server
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Register Entity Framework and Identity
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
+
+            // Swagger (for API testing)
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -26,11 +48,11 @@ namespace EventRSVPApp.Server
                 app.UseSwaggerUI();
             }
 
-            app.UseAuthorization();
-
+            app.UseHttpsRedirection();
+            app.UseAuthentication(); // Add authentication middleware
+            app.UseAuthorization();  // Add authorization middleware
 
             app.MapControllers();
-
             app.MapFallbackToFile("/index.html");
 
             app.Run();

@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:52366",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "D:\\Final_Projects\\RSVP2\\RSVP\\RSVP.Server\\..\\rsvp.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}

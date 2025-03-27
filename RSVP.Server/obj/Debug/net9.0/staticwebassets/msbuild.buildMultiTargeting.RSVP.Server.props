@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\RSVP.Server.props" />
+</Project>
