@@ -4,6 +4,7 @@ import LoginPage from './Pages/AuthForms/LoginPage.jsx';
 import RegistrationPage from './Pages/AuthForms/RegistrationPage.jsx';
 import VerifyOtpPage from './Pages/AuthForms/VerifyOtpPage.jsx';
 import ResetPassword from './Pages/AuthForms/ResetPassword.jsx';
+import ForgetPasswordPage from './Pages/AuthForms/ForgetPasswordPage.jsx';
 import UserHome from './Pages/UserPages/UserHome.jsx';
 import AuthLayout from './Layout/AuthLayout.jsx'
 import UserLayout from './Layout/UserLayout.jsx';
@@ -34,7 +35,7 @@ const App = () => {
                     path: 'verifyotp', element: <VerifyOtpPage />
                 },
                 {
-                    path: 'forgetpassword', element: <RegistrationPage />
+                    path: 'forgetpassword', element: <ForgetPasswordPage />
                 },
                 {
                     path: 'resetpassword', element: <ResetPassword />

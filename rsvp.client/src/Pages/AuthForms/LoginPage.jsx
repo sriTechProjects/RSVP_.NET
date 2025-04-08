@@ -94,7 +94,7 @@ const LoginPage = () => {
                     {/* Forgot Password Link */}
                     <div>
                         <a
-                            href="/auth/forget-password"
+                            href="/auth/forgetpassword"
                             className="w-full text-sm text-[#0077b5]"
                         >
                             Forgot Password?
