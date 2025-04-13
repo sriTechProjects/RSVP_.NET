@@ -1,6 +1,0 @@
-@EventRSVPApp.Server_HostAddress = http://localhost:5017
-
-GET {{EventRSVPApp.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

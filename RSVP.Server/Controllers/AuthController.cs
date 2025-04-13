@@ -22,19 +22,115 @@ namespace RSVP.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-                return BadRequest("Invalid request data.");
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Email and password are required.");
+            }
 
-            var existingUser = await _context.UserCredentials.FirstOrDefaultAsync(u => u.EmailId == request.Email);
-            if (existingUser == null)
-                return Unauthorized("Invalid email or password.");
+            // Check in Organisation table
+            var org = await _context.Organisations
+                .FirstOrDefaultAsync(o => o.OrgEmail == request.Email);
 
-            // Verify the password hash
-            if (request.Password != existingUser.Password)
-                return Unauthorized("Invalid email or password.");
+            if (org != null)
+            {
+                if (org.OrgPassword != request.Password)
+                {
+                    return Unauthorized("Invalid email or password.");
+                }
 
-            return Ok(new { message = "Login successful!", request = existingUser });
+                return Ok(new
+                {
+                    Message = "Login successful",
+                    Role = "organisation",
+                    OrganisationId = org.OrgId,
+                    Name = org.OrgName,
+                    Department = org.OrgDepartment,
+                    Email = org.OrgEmail,
+                    Contact = org.OrgContact,
+                    Events = org.OrgNoOfEvents,
+                    ClubId = org.ClubId
+                });
+            }
+
+            // Check in Student table
+            var student = await _context.Students
+                .FirstOrDefaultAsync(s => s.Email == request.Email);
+
+            if (student != null)
+            {
+                if (student.Password != request.Password)
+                {
+                    return Unauthorized("Invalid email or password.");
+                }
+
+                return Ok(new
+                {
+                    Message = "Login successful",
+                    Role = "student",
+                    StudentId = student.Prn,
+                    Name = student.Name,
+                    Email = student.Email,
+                    Contact = student.Contact,
+                    Department = student.Department,
+                    College = student.Div
+                });
+            }
+
+            return Unauthorized("Invalid email or password.");
         }
+
+        [HttpPost("register/student")]
+        public async Task<IActionResult> RegisterStudent([FromBody] Student student)
+        {
+            if (string.IsNullOrWhiteSpace(student.Email) || string.IsNullOrWhiteSpace(student.Password))
+            {
+                return BadRequest("Email and password are required.");
+            }
+
+            var existingStudent = await _context.Students
+                .FirstOrDefaultAsync(s => s.Email == student.Email);
+
+            if (existingStudent != null)
+            {
+                return Conflict("A student with this email already exists.");
+            }
+
+            // Optional: hash the password here
+            // student.Password = HashPassword(student.Password);
+
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Student registered successfully." });
+        }
+
+
+        [HttpPost("register/organisation")]
+        public async Task<IActionResult> RegisterOrganisation([FromBody] Organisation org)
+        {
+            if (string.IsNullOrWhiteSpace(org.OrgEmail) || string.IsNullOrWhiteSpace(org.OrgPassword))
+            {
+                return BadRequest("Email and password are required.");
+            }
+
+            var existingOrg = await _context.Organisations
+                .FirstOrDefaultAsync(o => o.OrgEmail == org.OrgEmail);
+
+            if (existingOrg != null)
+            {
+                return Conflict("An organisation with this email already exists.");
+            }
+
+            // Optional: hash the password here
+            // org.OrgPassword = HashPassword(org.OrgPassword);
+
+            _context.Organisations.Add(org);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Organisation registered successfully." });
+        }
+
+
 
         private bool VerifyPasswordHash(string password, string storedHash)
         {

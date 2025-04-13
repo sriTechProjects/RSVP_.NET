@@ -1,81 +1,118 @@
-use RSVP_DB;
 
---Creating the User_Credential Table:
-CREATE TABLE User_Credential (
-    user_id INT IDENTITY(1,1) PRIMARY KEY,
-    emailId VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL 
+
+--Student Table:
+CREATE TABLE Student (
+    PRN VARCHAR(20) PRIMARY KEY,
+    Name VARCHAR(100),
+    Department VARCHAR(50),
+    Year INT,
+    Div CHAR(1),
+    Batch VARCHAR(2),
+    Email VARCHAR(100),
+    Contact VARCHAR(10),
+    Password VARCHAR(100)
 );
+Select * from Student;
+
+--Club Table:
+CREATE TABLE Club (
+    club_id INT PRIMARY KEY IDENTITY(1,1),
+    club_name VARCHAR(100),
+    club_department VARCHAR(50),
+    club_email VARCHAR(100),
+    club_contact VARCHAR(10),
+    club_createdAt DATETIME DEFAULT GETDATE(),
+    club_updatedAt DATETIME DEFAULT GETDATE()
+);
+Select * from Club;
+
 
 --Organization Table:
-CREATE TABLE Organization (
-    org_id INT IDENTITY(1,1) PRIMARY KEY, 
-    org_name VARCHAR(255) NOT NULL,
-    org_email VARCHAR(255) UNIQUE NOT NULL,
-    org_phone_no VARCHAR(15) NOT NULL, 
-    org_joining DATE NOT NULL
+CREATE TABLE Organisation (
+    org_id INT PRIMARY KEY IDENTITY(1,1),
+    org_name VARCHAR(100),
+    org_department VARCHAR(50),
+    org_role VARCHAR(50),
+    org_email VARCHAR(100),
+    org_contact VARCHAR(10),
+    org_no_of_events INT,
+    club_id INT,
+    org_password VARCHAR(100),
+    FOREIGN KEY (club_id) REFERENCES Club(club_id)
 );
+
+Select * from Organisation;
+
 
 --Event Table
-CREATE TABLE EventTable (
-    event_id INT IDENTITY(1,1) PRIMARY KEY, 
-    event_title VARCHAR(255) NOT NULL, 
-    event_description TEXT, 
-    event_date DATE NOT NULL,
-    event_venue VARCHAR(255) NOT NULL, 
-    capacity INT NOT NULL,
-    org_id INT NOT NULL,
-    created_at DATETIME DEFAULT GETDATE(), 
-    CONSTRAINT FK_Event_Org FOREIGN KEY (org_id) REFERENCES Organization(org_id) ON DELETE CASCADE
+CREATE TABLE Event (
+    event_id INT PRIMARY KEY IDENTITY(1,1),
+    org_id INT,
+    event_name VARCHAR(100),
+    event_date DATE,
+    event_description TEXT,
+    event_start_time TIME,
+    event_end_time TIME,
+    event_venue VARCHAR(100),
+    event_status VARCHAR(50),
+    event_mode VARCHAR(20), 
+    event_no_of_seats INT,
+    event_eligibility VARCHAR(100),
+    event_paid VARCHAR(3) CHECK (event_paid IN ('Yes', 'No')),
+    event_amount DECIMAL(10,2) NULL,
+    event_qr VARBINARY(MAX) NULL,
+    FOREIGN KEY (org_id) REFERENCES Organisation(org_id),
+    CHECK (
+        (event_paid = 'Yes' AND event_amount IS NOT NULL AND event_qr IS NOT NULL) OR
+        (event_paid = 'No' AND event_amount IS NULL AND event_qr IS NULL)
+    )
+);
+select * from Event;
+
+
+--Event_Registration_Table
+CREATE TABLE Event_Registration (
+    event_reg_id INT PRIMARY KEY IDENTITY(1,1),
+    event_id INT,
+    student_id VARCHAR(20),
+    transaction_id VARCHAR(100),
+    payment_screenshot VARBINARY(MAX) NULL,
+    FOREIGN KEY (event_id) REFERENCES Event(event_id),
+    FOREIGN KEY (student_id) REFERENCES Student(PRN)
+);
+select * from Event_Registration;
+
+
+--Attendence
+CREATE TABLE Attendance (
+    attendance_id INT PRIMARY KEY IDENTITY(1,1),
+    event_registration_id INT UNIQUE,
+    status VARCHAR(10) CHECK (status IN ('Present', 'Absent')),
+    FOREIGN KEY (event_registration_id) REFERENCES Event_Registration(event_reg_id)
 );
 
---User Table
-CREATE TABLE UserTable (
-    userId INT IDENTITY(1,1) PRIMARY KEY,
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-    age INT CHECK (age >= 18) NOT NULL,
-    phoneNo VARCHAR(15) UNIQUE NOT NULL,
-    role VARCHAR(50) CHECK (role IN ('Admin', 'Manager', 'Employee', 'Guest')) NOT NULL,
-    organization_id INT NOT NULL,
-    CONSTRAINT FK_User_Organization FOREIGN KEY (organization_id) REFERENCES Organization(org_id) ON DELETE CASCADE
+select * from Attendance;
+
+INSERT INTO Organisation (
+    org_name, 
+    org_department, 
+    org_role, 
+    org_email, 
+    org_contact, 
+    org_no_of_events, 
+    club_id, 
+    org_password
+)
+VALUES (
+    'The Knowledge Network',        -- org_name
+    'Computer Engineering',         -- org_department
+    'Admin',                        -- org_role
+    'tkn@mitaoe.ac.in',             -- org_email
+    '9999990001',                   -- org_contact
+    3,                              -- org_no_of_events
+    NULL,                           -- club_id
+    'Tkn@123' -- hashed password
 );
 
---Booking Table
-CREATE TABLE Booking (
-    booking_id INT IDENTITY(1,1) PRIMARY KEY,
-    event_id INT NOT NULL,
-    user_id INT NOT NULL,
-    status CHAR(10) CHECK (status IN ('Pending', 'Confirmed', 'Cancelled')) NOT NULL,
-    booked_at DATETIME2 DEFAULT GETDATE(),
-    CONSTRAINT FK_Booking_Event FOREIGN KEY (event_id) REFERENCES EventTable(event_id) ON DELETE CASCADE,
-    CONSTRAINT FK_Booking_User FOREIGN KEY (user_id) REFERENCES User_Credential(user_id) ON DELETE CASCADE
-);
-
---Inserting the values in the User_Credential Table
-INSERT INTO User_Credential (emailId, password) VALUES 
-('vemularamani9373@gmail.com', 'Ram@123'),  
-('amrik.bhadra@mitaoe.ac.in', 'amk@123'),  
-('srivaths.iyer@mitaoe.ac.in', 'iyer@2005');
-
-select * from User_Credential;
-
-
---Inserting values for the Organisation Table 
-INSERT INTO Organization (org_name, org_email, org_phone_no, org_joining)  
-VALUES  
-('The Knowledge Network', 'knowledgenetwork@mitaoe.ac.in', '9373004289', '2022-06-15'),  
-('GDG', 'gdg@mitaoe.ac.in', '8765432109', '2020-09-25'),  
-('CodeChef', 'CodeChef@mitaoe.ac.in', '7654321098', '2021-03-10');
-
-select * from Organization;
-
-----Inserting values for the UserTable
-INSERT INTO UserTable (firstname, lastname, age, phoneNo, role, organization_id)  
-VALUES  
-('Ramani', 'Vemula', 21, '9373004289', 'Admin', 1),  
-('Amrik', 'Bhadra', 23, '7739226305', 'Manager', 2),  
-('Srivaths', 'Iyer', 22, '7654321098', 'Employee', 1);
-
-select * from UserTable;
-
+select * from Organisation;
+delete from Organisation where org_id = 1;

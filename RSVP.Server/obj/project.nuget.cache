@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "tm/C11qd9Ko=",
+  "dgSpecHash": "OP+SqK8ns54=",
   "success": true,
   "projectFilePath": "D:\\Final_Projects\\RSVP\\RSVP.Server\\RSVP.Server.csproj",
   "expectedPackageFiles": [
@@ -11,7 +11,7 @@
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\9.0.3\\microsoft.aspnetcore.cryptography.keyderivation.9.0.3.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\9.0.3\\microsoft.aspnetcore.identity.entityframeworkcore.9.0.3.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.1\\microsoft.aspnetcore.openapi.9.0.1.nupkg.sha512",
-    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\9.0.3\\microsoft.aspnetcore.spaproxy.9.0.3.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\9.0.4\\microsoft.aspnetcore.spaproxy.9.0.4.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.build.framework\\17.8.3\\microsoft.build.framework.17.8.3.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.build.locator\\1.7.8\\microsoft.build.locator.1.7.8.nupkg.sha512",
