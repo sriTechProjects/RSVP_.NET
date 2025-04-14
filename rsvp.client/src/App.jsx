@@ -9,6 +9,7 @@ import ForgetPasswordPage from './Pages/AuthForms/ForgetPasswordPage.jsx';
 import UserHome from './Pages/UserPages/UserHome.jsx';
 import AuthLayout from './Layout/AuthLayout.jsx'
 import UserLayout from './Layout/UserLayout.jsx';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
     const routes = createBrowserRouter([
@@ -50,6 +51,7 @@ const App = () => {
     ])
     return (
         <>
+            <Toaster position="top-right" reverseOrder={false} />
             <RouterProvider router={routes} />
         </>
     )
