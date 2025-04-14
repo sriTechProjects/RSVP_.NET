@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RSVP.Server.Models;
+using RSVP.Server.DTOs;
 using RSVP.Server.Services;
 using System.Security.Cryptography;
 using System.Text;
@@ -106,14 +107,18 @@ namespace RSVP.Server.Controllers
         }
 
 
-        [HttpPost("register/organisation")]
-        public async Task<IActionResult> RegisterOrganisation([FromBody] Organisation org)
+        [HttpPost("register/organisation-with-club")]
+        public async Task<IActionResult> RegisterWithClub([FromBody] ClubOrganisationDTO dto)
         {
-            if (string.IsNullOrWhiteSpace(org.OrgEmail) || string.IsNullOrWhiteSpace(org.OrgPassword))
+            var club = dto.Club;
+            var org = dto.Organisation;
+
+            if (club == null || org == null)
             {
-                return BadRequest("Email and password are required.");
+                return BadRequest("Club and Organisation details are required.");
             }
 
+            // Check if organisation already exists
             var existingOrg = await _context.Organisations
                 .FirstOrDefaultAsync(o => o.OrgEmail == org.OrgEmail);
 
@@ -122,14 +127,36 @@ namespace RSVP.Server.Controllers
                 return Conflict("An organisation with this email already exists.");
             }
 
-            // Optional: hash the password here
+            // Optional: Check if a club already exists (based on name or contact)
+            var existingClub = await _context.Clubs
+                .FirstOrDefaultAsync(c => c.ClubName == club.ClubName);
+
+            if (existingClub != null)
+            {
+                return Conflict("A club with this name already exists.");
+            }
+
+            // Save club first
+            _context.Clubs.Add(club);
+            await _context.SaveChangesAsync();  // This will generate ClubId
+
+            // Link the ClubId to the organisation
+            org.ClubId = club.ClubId;
+
+            // Optional: hash password before saving
             // org.OrgPassword = HashPassword(org.OrgPassword);
 
             _context.Organisations.Add(org);
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = "Organisation registered successfully." });
+            return Ok(new
+            {
+                Message = "Club and Organisation registered successfully.",
+                ClubId = club.ClubId,
+                OrganisationId = org.OrgId
+            });
         }
+
         [HttpPost("emailTest")]
         public async Task<IActionResult> emailTest([FromBody] string email, [FromServices] EmailService emailService)
         {
