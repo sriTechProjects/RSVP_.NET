@@ -116,3 +116,18 @@ VALUES (
 
 select * from Organisation;
 delete from Organisation where org_id = 1;
+
+INSERT INTO Student (PRN, Name, Department, Year, Div, Batch, Email, Contact, Password)
+VALUES (
+    '1234567890',
+    'Aarav Sharma',
+    'Computer Engineering',
+    3,
+    'B',
+    'B2',
+    'aarav.sharma@example.com',
+    '9876543210',
+    'pass1234' -- Ideally this should be a hashed password
+);
+
+select * from Student;

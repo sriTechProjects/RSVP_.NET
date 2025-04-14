@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RSVP.Server.Models;
+using RSVP.Server.Services;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,7 +130,19 @@ namespace RSVP.Server.Controllers
 
             return Ok(new { Message = "Organisation registered successfully." });
         }
+        [HttpPost("emailTest")]
+        public async Task<IActionResult> emailTest([FromBody] string email, [FromServices] EmailService emailService)
+        {
+            if (email==null)
+            {
+                return BadRequest("Email is required.");
+            }
+            string body = "<h3>Reset Your Password</h3><p>Click here to reset your password.</p>";
 
+            await emailService.SendEmailAsync(email, "Reset Password", body);
+
+            return Ok("Password reset email sent.");
+        }
 
 
         private bool VerifyPasswordHash(string password, string storedHash)

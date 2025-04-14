@@ -1,6 +1,7 @@
 // using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
- using RSVP.Server.Models;
+using RSVP.Server.Models;
+using RSVP.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<EmailService>();
+
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -48,6 +52,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 app.UseHttpsRedirection();
 
