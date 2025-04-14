@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from './Pages/AuthForms/LoginPage.jsx';
-import RegistrationPage from './Pages/AuthForms/RegistrationPage.jsx';
+import ClubRegistrationPage from './Pages/AuthForms/ClubRegistrationPage.jsx';
 import GuestRegistrationPage from './Pages/AuthForms/GuestRegistrationPage.jsx';
 import VerifyOtpPage from './Pages/AuthForms/VerifyOtpPage.jsx';
 import ResetPassword from './Pages/AuthForms/ResetPassword.jsx';
@@ -34,7 +34,7 @@ const App = () => {
                     path: 'register', element: <GuestRegistrationPage />
                 },
                 {
-                    path: 'orgregister', element: <RegistrationPage/>
+                    path: 'orgregister', element: <ClubRegistrationPage/>
                 },
                 {
                     path: 'verifyotp', element: <VerifyOtpPage />

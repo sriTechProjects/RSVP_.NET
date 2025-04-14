@@ -12,17 +12,20 @@ import DropdownFieldComponent from "../../Components/DropdownFieldComponent";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-const GuestRegistrationPage = () => {
+const ClubRegistrationPage = () => {
   const [name, setName] = useState("");
-  const [prn, setPRN] = useState("");
+  const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [department, setDepartment] = useState("");
-  const [year, setYear] = useState("");
-  const [division, setDivision] = useState("");
-  const [batch, setBatch] = useState("");
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [clubName, setClubName] = useState("");
+  const [clubDept, setClubDept] = useState("");
+  const [clubEmail, setClubEmail] = useState("");
+  const [clubContact, setClubcontact] = useState("");
+
   const [pageNo, setPageNo] = useState(1);
   const passwordStrength = [
     /[a-z]/.test(password),
@@ -45,24 +48,30 @@ const GuestRegistrationPage = () => {
       return;
     }
 
-    const student = {
-      name,
-      prn,
-      email,
-      department,
-      year,
-      division,
-      batch,
-      contact,
-      password,
-    };
+    const data = {
+      "club": {
+        clubName,
+        clubDepartment: clubDept,
+        clubEmail,
+        clubContact,
+        clubCreatedAt: new Date(),
+        clubUpdatedAt: new Date(),
+      },
+      "organisation":{
+        orgName: name,
+        orgDepartment: department,
+        orgRole: role,
+        orgEmail: email,
+        orgContact: contact,
+        orgNoOfEvents: 0,
+        orgPassword: password
+      }
+    }
 
     try {
       const response = await axios.post(
-        "http://localhost:5179/auth/register/student",
-        {
-          student,
-        }
+        "http://localhost:5179/auth/register/organisation-with-club",
+        data
       );
 
       if (response.status === 200) {
@@ -83,7 +92,7 @@ const GuestRegistrationPage = () => {
         <div className="h-12 w-12 border border-[#e0e0e0] text-primary-txt rounded-lg flex items-center justify-center mb-5 ">
           <FaUserAlt className="h-5 w-5" />
         </div>
-        <h1 className="text-2xl font-semibold mb-2">Register as Guest</h1>
+        <h1 className="text-2xl font-semibold mb-2">Register as Organizer</h1>
         <p className="text-sm text-center font-light text-secondary-txt">
           Join us to unlock unforgettable experiences — from live shows to
           hidden gems, your next great event starts here!
@@ -106,14 +115,14 @@ const GuestRegistrationPage = () => {
               />
 
               <InputFieldComponent
-                label="PRN No."
+                label="Role"
                 type="text"
-                name="prn"
-                id="prn"
-                placeholder="Enter Your PRN"
+                name="role"
+                id="role"
+                placeholder="Enter Your role"
                 icon={null}
-                value={prn}
-                onChange={setPRN}
+                value={role}
+                onChange={setRole}
                 required={true}
               />
             </div>
@@ -166,69 +175,81 @@ const GuestRegistrationPage = () => {
                 icon={FaBuilding}
                 required={true}
                 placeholder="Select Branch"
-                width="w-1/2"
-              />
-
-              <DropdownFieldComponent
-                label="Year"
-                name="year"
-                id="year"
-                value={year}
-                onChange={setYear}
-                options={[
-                  { value: 1, label: "FY" },
-                  { value: 2, label: "SY" },
-                  { value: 3, label: "TY" },
-                  { value: 4, label: "BTech" },
-                ]}
-                icon={null}
-                required={true}
-                placeholder="Select Year"
-                width="w-1/2"
-              />
-            </div>
-
-            <div className="flex w-full gap-x-2">
-              <DropdownFieldComponent
-                label="Division"
-                name="division"
-                id="division"
-                value={division}
-                onChange={setDivision}
-                options={[
-                  { value: "A", label: "A" },
-                  { value: "B", label: "B" },
-                  { value: "C", label: "C" },
-                  { value: "D", label: "D" },
-                ]}
-                icon={null}
-                required={true}
-                placeholder="Select Division"
-                width="w-1/2"
-              />
-
-              <DropdownFieldComponent
-                label="Batch"
-                name="batch"
-                id="batch"
-                value={batch}
-                onChange={setBatch}
-                options={[
-                  { value: "1", label: "1" },
-                  { value: "2", label: "2" },
-                  { value: "3", label: "3" },
-                  { value: "4", label: "4" },
-                ]}
-                icon={null}
-                required={true}
-                placeholder="Select Batch"
-                width="w-1/2"
+                width="w-full"
               />
             </div>
           </>
         )}
 
         {pageNo === 2 && (
+          <>
+            <div className="flex gap-x-2 w-full">
+              <InputFieldComponent
+                label="Club Name"
+                type="text"
+                name="clubname"
+                id="clubname"
+                placeholder="Enter Club Name"
+                icon={null}
+                value={clubName}
+                onChange={setClubName}
+                required={true}
+              />
+
+              <DropdownFieldComponent
+                label="Club Department"
+                name="department"
+                id="department"
+                value={clubDept}
+                onChange={setClubDept}
+                options={[
+                  { value: "comp-core", label: "Computer (Core)" },
+                  { value: "comp-ds", label: "Computer (Data Science)" },
+                  { value: "comp-aiml", label: "Computer (AI & ML)" },
+                  { value: "comp-it", label: "Computer (IT)" },
+                  { value: "comp-software", label: "Computer (Software)" },
+                  { value: "entc", label: "Electrical & Telecom" },
+                  { value: "etx", label: "Electronics" },
+                  { value: "chem", label: "Chemical" },
+                  { value: "mech", label: "Mechanical" },
+                  { value: "civil", label: "Civil" },
+                ]}
+                icon={FaBuilding}
+                required={true}
+                placeholder="Select Club Dept"
+                width="w-full"
+              />
+            </div>
+
+            <div className="flex gap-x-2 w-full">
+              <InputFieldComponent
+                label="Contact No."
+                type="text"
+                name="contact"
+                id="contact"
+                placeholder="Enter Your Contact No."
+                icon={FaPhoneAlt}
+                value={clubContact}
+                onChange={setClubcontact}
+                required={true}
+              />
+
+              <InputFieldComponent
+                label="Email"
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                icon={MdEmail}
+                value={clubEmail}
+                onChange={setClubEmail}
+                required={true}
+              />
+            </div>
+          </>
+        )}
+
+        {pageNo === 3 && (
           <div className="flex flex-col gap-4 w-full ">
             {/* Password and Confirm Password Fields */}
             <div className="flex gap-x-2 w-full">
@@ -328,16 +349,13 @@ const GuestRegistrationPage = () => {
         )}
 
         <div>
-          <Link
-            to="/auth/orgregister"
-            className="w-full text-sm text-[#0077b5]"
-          >
-            Register as Organiser?
+          <Link to="/auth/register" className="w-full text-sm text-[#0077b5]">
+            Register as Student?
           </Link>
         </div>
 
         <div className="flex flex-col gap-3 w-full">
-          {pageNo === 1 ? (
+          {pageNo === 1 || pageNo === 2 ? (
             <FormBtn btnText="Next" onClick={() => setPageNo(pageNo + 1)} />
           ) : (
             <FormBtn btnText="Register" onClick={handleGuestRegister} />
@@ -366,15 +384,21 @@ const GuestRegistrationPage = () => {
 
         <div className="flex justify-center gap-x-2 w-full transition-all duration-300 ease-in-out mt-1">
           <span
-            onClick={() => setPageNo(1)}
+            onClick={()=>setPageNo(1)}
             className={`p-[5px] rounded-full cursor-pointer ${
               pageNo === 1 ? "bg-[#333]" : "bg-[#eee]"
             }`}
           ></span>
           <span
-            onClick={() => setPageNo(2)}
+            onClick={()=>setPageNo(2)}
             className={`p-[5px] rounded-full cursor-pointer ${
               pageNo === 2 ? "bg-[#333]" : "bg-[#eee]"
+            }`}
+          ></span>
+          <span
+            onClick={()=>setPageNo(3)}
+            className={`p-[5px] rounded-full cursor-pointer ${
+              pageNo === 3 ? "bg-[#333]" : "bg-[#eee]"
             }`}
           ></span>
         </div>
@@ -383,4 +407,4 @@ const GuestRegistrationPage = () => {
   );
 };
 
-export default GuestRegistrationPage;
+export default ClubRegistrationPage;
