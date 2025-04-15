@@ -110,7 +110,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Enter Your Name"
                 icon={null}
                 value={name}
-                onChange={setName}
+                onChange={(e) => setName(e.target.value)}
                 required={true}
               />
 
@@ -122,7 +122,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Enter Your role"
                 icon={null}
                 value={role}
-                onChange={setRole}
+                onChange={(e) => setRole(e.target.value)}
                 required={true}
               />
             </div>
@@ -136,7 +136,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Enter Your Contact No."
                 icon={FaPhoneAlt}
                 value={contact}
-                onChange={setContact}
+                onChange={(e) => setContact(e.target.value)}
                 required={true}
               />
 
@@ -148,7 +148,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Enter your email"
                 icon={MdEmail}
                 value={email}
-                onChange={setEmail}
+                onChange={(e) => setEmail(e.target.value)}
                 required={true}
               />
             </div>
@@ -192,7 +192,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Enter Club Name"
                 icon={null}
                 value={clubName}
-                onChange={setClubName}
+                onChange={(e) => setClubName(e.target.value)}
                 required={true}
               />
 
@@ -230,7 +230,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Enter Your Contact No."
                 icon={FaPhoneAlt}
                 value={clubContact}
-                onChange={setClubcontact}
+                onChange={(e) => setClubcontact(e.target.value)}
                 required={true}
               />
 
@@ -242,7 +242,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Enter your email"
                 icon={MdEmail}
                 value={clubEmail}
-                onChange={setClubEmail}
+                onChange={(e) => setClubEmail(e.target.value)}
                 required={true}
               />
             </div>
@@ -260,7 +260,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Set your password"
                 icon={RiLockPasswordFill}
                 value={password}
-                onChange={setPassword}
+                onChange={(e) => setPassword(e.target.value)}
                 required={true}
               />
 
@@ -271,7 +271,7 @@ const ClubRegistrationPage = () => {
                 placeholder="Re-enter your password"
                 icon={RiLockPasswordFill}
                 value={confirmPassword}
-                onChange={setConfirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required={true}
               />
             </div>
