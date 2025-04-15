@@ -10,6 +10,10 @@ import UserHome from './Pages/UserPages/UserHome.jsx';
 import AuthLayout from './Layout/AuthLayout.jsx'
 import UserLayout from './Layout/UserLayout.jsx';
 import { Toaster } from 'react-hot-toast';
+import OrganiserLayout from './Layout/OrganiserLayout.jsx';
+import OrganiserDashboard from './Pages/OrganiserPages/OrganiserDashboard.jsx';
+import OrganiserEvents from './Pages/OrganiserPages/OrganiserEvents.jsx';
+
 
 const App = () => {
     const routes = createBrowserRouter([
@@ -47,7 +51,20 @@ const App = () => {
                 }
 
             ]
-        }
+        },
+
+        {
+            path: "/organiser",
+            element: <OrganiserLayout />,
+            children: [
+                {
+                    path: '', element: <OrganiserDashboard/>
+                },
+                {
+                    path: 'events', element: <OrganiserEvents/>
+                }
+            ]
+        },
     ])
     return (
         <>

@@ -5,13 +5,26 @@ import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import InputFieldComponent from '../../Components/InputFieldComponent'
 import FormBtn from "../../Components/FormBtn";
-
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ForgetPasswordPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const handleSendOTP = () => {
-    navigate("/auth/verifyotp");
+  const handleSendOTP = async () => {
+    try {
+      const response = await axios.post('', { email });
+      
+      if (response.status === 200) {
+       toast.success('OTP Sent!')
+        navigate("/auth/verifyotp");
+      } else {
+        alert("Failed to send OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      alert("An error occurred while sending OTP. Please check your network or try again later.");
+    }
   };
 
   return (
@@ -35,7 +48,7 @@ const ForgetPasswordPage = () => {
           placeholder="Enter your email"
           icon={MdEmail}
           value={email}
-          onChange={setEmail}
+          onChange={(e) => setEmail(e.target.value)}
           required={true}
         />
 
