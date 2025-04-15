@@ -38,16 +38,7 @@ const InputFieldComponent = ({
           id={id}
           placeholder={placeholder}
           value={value}
-          onChange={(e) => {
-            if (typeof onChange === "function") {
-              // Handle both direct value updates and event objects
-              if (typeof e === "object" && e.target) {
-                onChange(e.target.value);
-              } else {
-                onChange(e);
-              }
-            }
-          }}
+          onChange={onChange}
           required={required}
           className={`
             w-full outline-none border-none bg-transparent
