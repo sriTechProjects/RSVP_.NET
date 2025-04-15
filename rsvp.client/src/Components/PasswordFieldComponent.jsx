@@ -12,10 +12,11 @@ const PasswordFieldComponent = ({
     onChange,
     required,
     className = "",
+    width = "w-full"
 }) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <div className="flex flex-col gap-2">
+        <div className={`flex flex-col gap-2 ${width}`}>
             {label && (
                 <label htmlFor={id} className="text-sm font-medium text-primary-text">
                     {label} {required && <span className="text-red-500">*</span>}
