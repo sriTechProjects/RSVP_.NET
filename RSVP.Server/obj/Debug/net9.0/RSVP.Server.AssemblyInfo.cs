@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RSVP.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68a84dc28f7ea186263ca14dbc8ad768d92b4f12")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+939efcbe6c7627227688e0db080d9f531f8a4703")]
 [assembly: System.Reflection.AssemblyProductAttribute("RSVP.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RSVP.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
