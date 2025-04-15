@@ -101,7 +101,7 @@ const GuestRegistrationPage = () => {
                 placeholder="Enter Your Name"
                 icon={null}
                 value={name}
-                onChange={setName}
+                onChange={(e)=>setName(e.target.value)}
                 required={true}
               />
 
@@ -113,7 +113,7 @@ const GuestRegistrationPage = () => {
                 placeholder="Enter Your PRN"
                 icon={null}
                 value={prn}
-                onChange={setPRN}
+                onChange={(e) => setPRN(e.target.value)}
                 required={true}
               />
             </div>
@@ -127,7 +127,7 @@ const GuestRegistrationPage = () => {
                 placeholder="Enter Your Contact No."
                 icon={FaPhoneAlt}
                 value={contact}
-                onChange={setContact}
+                onChange={(e) => setContact(e.target.value)}
                 required={true}
               />
 
@@ -139,7 +139,7 @@ const GuestRegistrationPage = () => {
                 placeholder="Enter your email"
                 icon={MdEmail}
                 value={email}
-                onChange={setEmail}
+                onChange={(e) => setEmail(e.target.value)}
                 required={true}
               />
             </div>
@@ -239,7 +239,7 @@ const GuestRegistrationPage = () => {
                 placeholder="Set your password"
                 icon={RiLockPasswordFill}
                 value={password}
-                onChange={setPassword}
+                onChange={(e) => setPassword(e.target.value)}
                 required={true}
               />
 
@@ -250,7 +250,7 @@ const GuestRegistrationPage = () => {
                 placeholder="Re-enter your password"
                 icon={RiLockPasswordFill}
                 value={confirmPassword}
-                onChange={setConfirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required={true}
               />
             </div>
