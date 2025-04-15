@@ -1,4 +1,4 @@
-
+use RSVP_DB;
 
 --Student Table:
 CREATE TABLE Student (
@@ -119,15 +119,19 @@ delete from Organisation where org_id = 1;
 
 INSERT INTO Student (PRN, Name, Department, Year, Div, Batch, Email, Contact, Password)
 VALUES (
-    '1234567890',
+    '202201040077',
     'Aarav Sharma',
     'Computer Engineering',
-    3,
+    37,
     'B',
     'B2',
-    'aarav.sharma@example.com',
+    'srivaths.iyer@gmail.com',
     '9876543210',
     'pass1234' -- Ideally this should be a hashed password
 );
 
 select * from Student;
+
+
+ALTER TABLE Event
+ADD event_category VARCHAR(50) NULL;

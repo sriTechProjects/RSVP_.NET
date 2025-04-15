@@ -15,6 +15,8 @@ builder.Services.AddDbContext<RsvpDbContext>(options =>
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
+builder.Services.AddMemoryCache();
+
 // Configure CORS
 builder.Services.AddCors(options =>
 {

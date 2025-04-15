@@ -7,6 +7,8 @@ using RSVP.Server.Services;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace RSVP.Server.Controllers
 {
@@ -15,9 +17,11 @@ namespace RSVP.Server.Controllers
     public class AuthController : ControllerBase
     {
         private readonly RsvpDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public AuthController(RsvpDbContext context)
+        public AuthController(RsvpDbContext context, IMemoryCache cache)
         {
+            _cache = cache;
             _context = context;
         }
 
@@ -33,6 +37,7 @@ namespace RSVP.Server.Controllers
             var org = await _context.Organisations
                 .FirstOrDefaultAsync(o => o.OrgEmail == request.Email);
 
+             
             if (org != null)
             {
                 if (org.OrgPassword != request.Password)
@@ -156,6 +161,57 @@ namespace RSVP.Server.Controllers
                 OrganisationId = org.OrgId
             });
         }
+
+        [HttpPost("forget-password")]
+        public async Task<IActionResult> ForgetPassword([FromBody] string email, [FromServices] EmailService emailService)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return BadRequest("Email is required.");
+
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == email);
+            var organisation = await _context.Organisations.FirstOrDefaultAsync(o => o.OrgEmail == email);
+
+            if (student == null && organisation == null)
+                return NotFound("No user found with the provided email.");
+
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            // Store OTP in memory cache for 10 minutes
+            _cache.Set(email, otp, TimeSpan.FromMinutes(10));
+
+            string subject = "Password Reset OTP";
+            string body = $"<h3>Your OTP is: <strong>{otp}</strong></h3><p>It is valid for 10 minutes.</p>";
+
+            await emailService.SendEmailAsync(email, subject, body);
+
+            return Ok("OTP sent to your email.");
+        }
+
+        [HttpPost("verify-otp")]
+        public IActionResult VerifyOtp([FromBody] OtpRequest request)
+        {
+            if (_cache.TryGetValue(request.Email, out string storedOtp))
+            {
+                if (storedOtp == request.Otp)
+                {
+                    // Optionally remove after verification
+                    _cache.Remove(request.Email);
+                    return Ok("OTP verified.");
+                }
+
+                return BadRequest("Invalid OTP.");
+            }
+
+            return BadRequest("OTP expired or not found.");
+        }
+
+        public class OtpRequest
+        {
+            public string Email { get; set; }
+            public string Otp { get; set; }
+        }
+
+
 
         [HttpPost("emailTest")]
         public async Task<IActionResult> emailTest([FromBody] string email, [FromServices] EmailService emailService)
