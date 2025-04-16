@@ -14,7 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RSVP.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+add19005b069d14162f80c1eded8f858f1fbe51a")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68a84dc28f7ea186263ca14dbc8ad768d92b4f12")]
+>>>>>>> c6cbdc0 (Route Updates)
 [assembly: System.Reflection.AssemblyProductAttribute("RSVP.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RSVP.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

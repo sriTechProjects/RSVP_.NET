@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "A7tiZC8AjpjV7uUAd6Xm04JiwSwSJlmQWEVHQJYBuZA=",
+  "Hash": "WL6S29CgOx/enKdUoJPCPpLRRWk2PDqMBXo4hJlVYms=",
   "Source": "RSVP.Server",
   "BasePath": "_content/RSVP.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "D:\\Final_Projects\\RSVP\\rsvp.client\\rsvp.client.esproj",
+      "Identity": "C:\\Users\\Rama\\source\\repos\\RSVP_.NET\\rsvp.client\\rsvp.client.esproj",
       "Version": 2,
       "Source": "rsvp.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",

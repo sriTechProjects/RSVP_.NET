@@ -1,4 +1,4 @@
-// using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RSVP.Server.Models;
 using RSVP.Server.Services;
@@ -14,6 +14,10 @@ builder.Services.AddDbContext<RsvpDbContext>(options =>
 
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IPasswordHasher<Student>, PasswordHasher<Student>>();
+builder.Services.AddScoped<IPasswordHasher<Organisation>, PasswordHasher<Organisation>>();
 
 builder.Services.AddMemoryCache();
 
@@ -35,7 +39,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<EmailService>();
 
-
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -54,8 +57,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
 
 app.UseHttpsRedirection();
 

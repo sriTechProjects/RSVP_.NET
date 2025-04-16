@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RSVP.Server.Models;
@@ -9,6 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 using Microsoft.Extensions.Caching.Memory;
+<<<<<<< HEAD
+=======
+using System;
+>>>>>>> c6cbdc0 (Route Updates)
 
 namespace RSVP.Server.Controllers
 {
@@ -18,11 +23,26 @@ namespace RSVP.Server.Controllers
     {
         private readonly RsvpDbContext _context;
         private readonly IMemoryCache _cache;
+<<<<<<< HEAD
 
         public AuthController(RsvpDbContext context, IMemoryCache cache)
+=======
+        private readonly IEmailService _emailService;
+        private readonly IPasswordHasher<Student> _studentPasswordHasher;
+        private readonly IPasswordHasher<Organisation> _organisationPasswordHasher;
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(RsvpDbContext context, IMemoryCache cache, IEmailService emailService,
+                      IPasswordHasher<Student> studentPasswordHasher, ILogger<AuthController> logger,
+                      IPasswordHasher<Organisation> organisationPasswordHasher)
+>>>>>>> c6cbdc0 (Route Updates)
         {
             _cache = cache;
             _context = context;
+            _emailService = emailService;
+            _logger = logger;
+            _studentPasswordHasher = studentPasswordHasher;
+            _organisationPasswordHasher = organisationPasswordHasher;
         }
 
         [HttpPost("login")]
@@ -40,23 +60,24 @@ namespace RSVP.Server.Controllers
              
             if (org != null)
             {
-                if (org.OrgPassword != request.Password)
-                {
-                    return Unauthorized("Invalid email or password.");
-                }
+                var orgPasswordResult = _organisationPasswordHasher
+                    .VerifyHashedPassword(org, org.OrgPassword, request.Password);
 
-                return Ok(new
+                if (orgPasswordResult == PasswordVerificationResult.Success)
                 {
-                    Message = "Login successful",
-                    Role = "organisation",
-                    OrganisationId = org.OrgId,
-                    Name = org.OrgName,
-                    Department = org.OrgDepartment,
-                    Email = org.OrgEmail,
-                    Contact = org.OrgContact,
-                    Events = org.OrgNoOfEvents,
-                    ClubId = org.ClubId
-                });
+                    return Ok(new
+                    {
+                        Message = "Login successful",
+                        Role = "organisation",
+                        OrganisationId = org.OrgId,
+                        Name = org.OrgName,
+                        Department = org.OrgDepartment,
+                        Email = org.OrgEmail,
+                        Contact = org.OrgContact,
+                        Events = org.OrgNoOfEvents,
+                        ClubId = org.ClubId
+                    });
+                }
             }
 
             // Check in Student table
@@ -65,22 +86,23 @@ namespace RSVP.Server.Controllers
 
             if (student != null)
             {
-                if (student.Password != request.Password)
-                {
-                    return Unauthorized("Invalid email or password.");
-                }
+                var studentPasswordResult = _studentPasswordHasher
+                    .VerifyHashedPassword(student, student.Password, request.Password);
 
-                return Ok(new
+                if (studentPasswordResult == PasswordVerificationResult.Success)
                 {
-                    Message = "Login successful",
-                    Role = "student",
-                    StudentId = student.Prn,
-                    Name = student.Name,
-                    Email = student.Email,
-                    Contact = student.Contact,
-                    Department = student.Department,
-                    College = student.Div
-                });
+                    return Ok(new
+                    {
+                        Message = "Login successful",
+                        Role = "student",
+                        StudentId = student.Prn,
+                        Name = student.Name,
+                        Email = student.Email,
+                        Contact = student.Contact,
+                        Department = student.Department,
+                        College = student.Div
+                    });
+                }
             }
 
             return Unauthorized("Invalid email or password.");
@@ -102,15 +124,12 @@ namespace RSVP.Server.Controllers
                 return Conflict("A student with this email already exists.");
             }
 
-            // Optional: hash the password here
-            // student.Password = HashPassword(student.Password);
-
+            student.Password = _studentPasswordHasher.HashPassword(student, student.Password);
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "Student registered successfully." });
         }
-
 
         [HttpPost("register/organisation-with-club")]
         public async Task<IActionResult> RegisterWithClub([FromBody] ClubOrganisationDTO dto)
@@ -132,7 +151,7 @@ namespace RSVP.Server.Controllers
                 return Conflict("An organisation with this email already exists.");
             }
 
-            // Optional: Check if a club already exists (based on name or contact)
+            // Check if a club already exists (based on name or contact)
             var existingClub = await _context.Clubs
                 .FirstOrDefaultAsync(c => c.ClubName == club.ClubName);
 
@@ -143,13 +162,10 @@ namespace RSVP.Server.Controllers
 
             // Save club first
             _context.Clubs.Add(club);
-            await _context.SaveChangesAsync();  // This will generate ClubId
+            await _context.SaveChangesAsync();
 
             // Link the ClubId to the organisation
             org.ClubId = club.ClubId;
-
-            // Optional: hash password before saving
-            // org.OrgPassword = HashPassword(org.OrgPassword);
 
             _context.Organisations.Add(org);
             await _context.SaveChangesAsync();
@@ -184,6 +200,10 @@ namespace RSVP.Server.Controllers
 
             await emailService.SendEmailAsync(email, subject, body);
 
+<<<<<<< HEAD
+=======
+            Console.WriteLine($"Generated OTP for {email}: {otp}");
+>>>>>>> c6cbdc0 (Route Updates)
             return Ok("OTP sent to your email.");
         }
 
@@ -194,8 +214,11 @@ namespace RSVP.Server.Controllers
             {
                 if (storedOtp == request.Otp)
                 {
+<<<<<<< HEAD
                     // Optionally remove after verification
                     _cache.Remove(request.Email);
+=======
+>>>>>>> c6cbdc0 (Route Updates)
                     return Ok("OTP verified.");
                 }
 
@@ -211,12 +234,55 @@ namespace RSVP.Server.Controllers
             public string Otp { get; set; }
         }
 
+<<<<<<< HEAD
 
+=======
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            if (!_cache.TryGetValue(request.Email, out string storedOtp) || storedOtp != request.Otp)
+            {
+                return BadRequest("Invalid or expired OTP.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                return BadRequest("Password is required.");
+            }
+
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == request.Email);
+            if (student != null)
+            {
+                student.Password = _studentPasswordHasher.HashPassword(student, request.NewPassword);
+                await _context.SaveChangesAsync();
+                _cache.Remove(request.Email);
+                return Ok("Password reset successfully.");
+            }
+
+            var org = await _context.Organisations.FirstOrDefaultAsync(o => o.OrgEmail == request.Email);
+            if (org != null)
+            {
+                org.OrgPassword = _organisationPasswordHasher.HashPassword(org, request.NewPassword);
+                await _context.SaveChangesAsync();
+                _cache.Remove(request.Email);
+                return Ok("Password reset successfully.");
+            }
+
+            return NotFound("User not found.");
+        }
+
+        public class ResetPasswordRequest
+        {
+            public string Email { get; set; }
+            public string Otp { get; set; }
+            public string NewPassword { get; set; }
+        }
+>>>>>>> c6cbdc0 (Route Updates)
 
         [HttpPost("emailTest")]
         public async Task<IActionResult> emailTest([FromBody] string email, [FromServices] EmailService emailService)
         {
-            if (email==null)
+            if (email == null)
             {
                 return BadRequest("Email is required.");
             }
@@ -226,7 +292,6 @@ namespace RSVP.Server.Controllers
 
             return Ok("Password reset email sent.");
         }
-
 
         private bool VerifyPasswordHash(string password, string storedHash)
         {

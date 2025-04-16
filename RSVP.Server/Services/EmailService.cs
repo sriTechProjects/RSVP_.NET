@@ -1,11 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 
 namespace RSVP.Server.Services
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
 
@@ -20,8 +19,8 @@ namespace RSVP.Server.Services
             {
                 Port = int.Parse(_configuration["Smtp:Port"]),
                 Credentials = new NetworkCredential(
-                _configuration["Smtp:Username"],
-                _configuration["Smtp:Password"]),
+                    _configuration["Smtp:Username"],
+                    _configuration["Smtp:Password"]),
                 EnableSsl = true
             };
 
