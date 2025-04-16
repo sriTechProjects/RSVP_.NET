@@ -35,7 +35,8 @@ const PasswordFieldComponent = ({
                     id={id}
                     placeholder={placeholder}
                     value={value}
-                    onChange={(e) => onChange(e.target.value)}
+                    // onChange={(e) => onChange(e.target.value)}
+                    onChange={onChange}
                     required={required}
                     className={`
             w-full outline-none border-none bg-transparent
