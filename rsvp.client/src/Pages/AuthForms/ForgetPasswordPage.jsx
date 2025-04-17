@@ -11,9 +11,11 @@ import toast from "react-hot-toast";
 const ForgetPasswordPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const handleSendOTP = async () => {
+  
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('', { email });
+      const response = await axios.post('', JSON.stringify(email));
       
       if (response.status === 200) {
        toast.success('OTP Sent!')

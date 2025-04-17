@@ -41,7 +41,8 @@ const ClubRegistrationPage = () => {
 
   const navigate = useNavigate();
 
-  const handleGuestRegister = async () => {
+  const handleGuestRegister = async (e) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Both passwords should match!");
       return;

@@ -16,7 +16,8 @@ const ResetPassword = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const handleResetPassword = async () => {
+    const handleResetPassword = async (e) => {
+        e.preventDefault();
         if (password !== confirmPassword) {
           toast.error('Both passwords should match!');
           return;

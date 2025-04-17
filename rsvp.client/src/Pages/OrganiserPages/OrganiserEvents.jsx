@@ -18,173 +18,104 @@ const getStatusColor = (status) => {
 };
 
 const initialEvents = [
-    {
-      id: 1,
-      name: "Nirmaan 3.0",
-      description:"This is a hackathon for all",
-      category: "Hackathon",
-      date: "20/04/2025",
-      venue: "D011",
-      status: "Registration Open",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 2,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 3,
-      name: "OOPS in Java",
-      category: "Bootcamp",
-      date: "23/04/2025",
-      venue: "A101",
-      status: "Registration Open",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 4,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 5,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 6,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 7,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 8,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 9,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 10,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 11,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 12,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 13,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 14,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-    {
-      id: 15,
-      name: "Pair Programming",
-      category: "Coding Contest",
-      date: "10/04/2025",
-      venue: "H304",
-      status: "Registration Closed",
-      mode: "offline",
-      starttime: "16:00",
-      endtime: "18:00"
-    },
-  ];
+  {
+    id: 1,
+    name: "Nirmaan 3.0",
+    description: "This is a hackathon for all",
+    category: "Hackathon",
+    date: "20/04/2025",
+    venue: "D011",
+    status: "Registration Open",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY,Btech"
+  },
+  {
+    id: 2,
+    name: "Pair Programming",
+    category: "Coding Contest",
+    date: "10/04/2025",
+    venue: "H304",
+    status: "Registration Closed",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY,Btech"
+  },
+  {
+    id: 3,
+    name: "OOPS in Java",
+    category: "Bootcamp",
+    date: "23/04/2025",
+    venue: "A101",
+    status: "Registration Open",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY,Btech"
+  },
+  {
+    id: 4,
+    name: "Pair Programming",
+    category: "Coding Contest",
+    date: "10/04/2025",
+    venue: "H304",
+    status: "Registration Closed",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY,Btech"
+  },
+  {
+    id: 5,
+    name: "Pair Programming",
+    category: "Coding Contest",
+    date: "10/04/2025",
+    venue: "H304",
+    status: "Registration Closed",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY,Btech"
+  },
+  {
+    id: 6,
+    name: "Pair Programming",
+    category: "Coding Contest",
+    date: "10/04/2025",
+    venue: "H304",
+    status: "Registration Closed",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY,Btech"
+  },
+  {
+    id: 7,
+    name: "Pair Programming",
+    category: "Coding Contest",
+    date: "10/04/2025",
+    venue: "H304",
+    status: "Registration Closed",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY"
+  },
+  {
+    id: 8,
+    name: "Pair Programming",
+    category: "Coding Contest",
+    date: "10/04/2025",
+    venue: "H304",
+    status: "Registration Closed",
+    mode: "offline",
+    starttime: "16:00",
+    endtime: "18:00",
+    eligibility: "SY,TY,Btech"
+  }
+];
 
 const OrganiserEvents = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -193,16 +124,14 @@ const OrganiserEvents = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [editEvent, setEditEvent] = useState(null);
   const [deleteEvent, setDeleteEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteEventId, setDeleteEventId] = useState(null);
   const [events, setEvents] = useState(initialEvents);
 
   const totalPages = Math.ceil(events.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const displayedEvents = events.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+  const displayedEvents = events.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handleDelete = () => {
     setDeleteEvent();
@@ -265,7 +194,10 @@ const OrganiserEvents = () => {
 
         <tbody>
           {displayedEvents.map((event, index) => (
-            <tr key={event.id} className="border-b border-gray-200 transition text-sm">
+            <tr
+              key={event.id}
+              className="border-b border-gray-200 transition text-sm"
+            >
               <td className="py-3 px-5 text-center">
                 {startIndex + index + 1}
               </td>
@@ -284,7 +216,14 @@ const OrganiserEvents = () => {
               </td>
               <td className="py-2 px-5 text-center space-x-2 flex justify-center">
                 {/* view */}
-                <button className="relative group border border-gray-200 p-2 rounded-md" onClick={()=>setIsEventDetailOpen(true)}>
+                <button
+                  className="relative group border border-gray-200 p-2 rounded-md"
+                  onClick={
+                    () => {
+                      setIsEventDetailOpen(true)
+                      setSelectedEvent(event)
+                    }}
+                >
                   <FaRegEye />
                   <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
                     View Details
@@ -373,14 +312,12 @@ const OrganiserEvents = () => {
         />
       )}
 
-
-      {
-        isEventDetailOpen && (
-          <EventDetailsComponent
-            onClose={()=>setIsEventDetailOpen(false)}
-          />
-        )
-      }
+      {isEventDetailOpen && (
+        <EventDetailsComponent
+          event={selectedEvent}
+          onClose={() => setIsEventDetailOpen(false)}
+        />
+      )}
     </div>
   );
 };
