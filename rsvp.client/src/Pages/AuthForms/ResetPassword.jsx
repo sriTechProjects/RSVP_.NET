@@ -7,6 +7,8 @@ import FormBtn from '../../Components/FormBtn';
 import { MdOutlinePassword } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { IoMdArrowBack } from "react-icons/io";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 
 const ResetPassword = () => {
@@ -14,9 +16,30 @@ const ResetPassword = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const handleResetPassword = () => {
-        navigate('/auth/login');
-    }
+    const handleResetPassword = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+          toast.error('Both passwords should match!');
+          return;
+        }
+      
+        try {      
+          const response = await axios.post("", {
+            newPassword: password,
+          });
+      
+          if (response.status === 200) {
+            toast.success("Password reset successful!");
+            navigate("/auth/login");
+          } else {
+            toast.error("Failed to reset password. Please try again.");
+          }
+        } catch (error) {
+          console.error("Reset password error:", error);
+          toast.error("An error occurred. Please try again later.");
+        }
+      };
+      
 
     return (
         <div className="w-full max-w-md bg-white shadow-sm rounded-lg p-6 flex flex-col gap-6">
@@ -37,7 +60,7 @@ const ResetPassword = () => {
                     placeholder="Enter your password"
                     icon={RiLockPasswordFill}
                     value={password}
-                    onChange={setPassword}
+                    onChange={(e) => setPassword(e.target.value)}
                     required={true}
                 />
 
@@ -48,7 +71,7 @@ const ResetPassword = () => {
                     placeholder="Re-enter your password"
                     icon={RiLockPasswordFill}
                     value={confirmPassword}
-                    onChange={setConfirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required={true}
                 />
 

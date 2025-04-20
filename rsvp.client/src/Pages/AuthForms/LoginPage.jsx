@@ -65,7 +65,7 @@ const LoginPage = () => {
                     placeholder="Enter your email"
                     icon={MdEmail}
                     value={email}
-                    onChange={setEmail}
+                    onChange={(e) => setEmail(e.target.value)}
                     required={true}
                 />
 
@@ -76,7 +76,7 @@ const LoginPage = () => {
                     placeholder="Enter your password"
                     icon={RiLockPasswordFill}
                     value={password}
-                    onChange={setPassword}
+                    onChange={(e) => setPassword(e.target.value)}
                     required={true}
                 />
 
@@ -94,7 +94,7 @@ const LoginPage = () => {
                     {/* Forgot Password Link */}
                     <div>
                         <a
-                            href="/auth/forget-password"
+                            href="/auth/forgetpassword"
                             className="w-full text-sm text-[#0077b5]"
                         >
                             Forgot Password?
