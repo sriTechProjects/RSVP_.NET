@@ -1,21 +1,21 @@
 {
   "Version": 1,
-  "Hash": "A7tiZC8AjpjV7uUAd6Xm04JiwSwSJlmQWEVHQJYBuZA=",
+  "Hash": "xz6Bh13no3+jWsVwTBRHDiAul3Mwt60Ht+PGsrYpjpc=",
   "Source": "RSVP.Server",
   "BasePath": "_content/RSVP.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "D:\\Final_Projects\\RSVP\\rsvp.client\\rsvp.client.esproj",
+      "Identity": "C:\\Users\\amkbh\\Music\\EventRegistration\\rsvp.client\\rsvp.client.esproj",
       "Version": 2,
       "Source": "rsvp.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
     }
   ],
   "DiscoveryPatterns": [],

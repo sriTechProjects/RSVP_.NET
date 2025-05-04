@@ -1,2 +1,3 @@
 D:\Final_Projects\RSVP2\RSVP\rsvp.client\obj\Debug\rsvp.client.esproj.CoreCompileInputs.cache
 D:\Final_Projects\RSVP\rsvp.client\obj\Debug\rsvp.client.esproj.CoreCompileInputs.cache
+C:\Users\amkbh\Music\EventRegistration\rsvp.client\obj\Debug\rsvp.client.esproj.CoreCompileInputs.cache

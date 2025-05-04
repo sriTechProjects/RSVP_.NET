@@ -5389,23 +5389,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Asus\\.nuget\\packages\\": {},
+    "C:\\Users\\amkbh\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Final_Projects\\RSVP\\RSVP.Server\\RSVP.Server.csproj",
+      "projectUniqueName": "C:\\Users\\amkbh\\Music\\EventRegistration\\RSVP.Server\\RSVP.Server.csproj",
       "projectName": "RSVP.Server",
-      "projectPath": "D:\\Final_Projects\\RSVP\\RSVP.Server\\RSVP.Server.csproj",
-      "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-      "outputPath": "D:\\Final_Projects\\RSVP\\RSVP.Server\\obj\\",
+      "projectPath": "C:\\Users\\amkbh\\Music\\EventRegistration\\RSVP.Server\\RSVP.Server.csproj",
+      "packagesPath": "C:\\Users\\amkbh\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\amkbh\\Music\\EventRegistration\\RSVP.Server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\amkbh\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5494,7 +5494,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
