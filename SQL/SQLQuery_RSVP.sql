@@ -135,3 +135,126 @@ select * from Student;
 
 ALTER TABLE Event
 ADD event_category VARCHAR(50) NULL;
+
+EXEC sp_help 'event';
+
+SET IDENTITY_INSERT Event OFF;
+
+select * from Event;
+
+INSERT INTO Event (
+  org_id, event_name, event_date, event_description,
+  event_start_time, event_end_time, event_venue,
+  event_status, event_mode, event_no_of_seats,
+  event_eligibility, event_paid, event_amount,
+  event_qr, event_category
+)
+VALUES 
+-- Paid Events (event_amount NOT NULL, event_qr NOT NULL)
+(2, 'AI Workshop', '2025-05-05', 'A hands-on AI workshop for beginners.',
+ '10:00:00', '13:00:00', 'Auditorium A', 'Scheduled', 'Offline', 100,
+ 'All Students', 'Yes', 150.00, 0x010203, 'Technical'),
+
+(4, 'Cybersecurity Seminar', '2025-05-08', 'Explore basics of cybersecurity.',
+ '14:00:00', '16:00:00', 'Hall B', 'Scheduled', 'Online', 200,
+ 'Engineering Students', 'Yes', 200.00, 0xDEADBEEF, 'Seminar'),
+
+(5, 'Tech Expo', '2025-05-10', 'Exhibition of latest tech projects.',
+ '09:00:00', '12:00:00', 'Expo Center', 'Scheduled', 'Offline', 150,
+ 'Everyone', 'Yes', 100.00, 0xA1B2C3D4, 'Exhibition'),
+
+-- Free Events (event_amount NULL, event_qr NULL)
+(2, 'Intro to Git', '2025-05-12', 'Learn Git basics in this session.',
+ '11:00:00', '12:30:00', 'Lab 1', 'Scheduled', 'Offline', 80,
+ 'All Branches', 'No', NULL, NULL, 'Workshop'),
+
+(6, 'Startup Talk', '2025-05-15', 'Hear from successful startup founders.',
+ '15:00:00', '17:00:00', 'Seminar Hall', 'Scheduled', 'Offline', 100,
+ 'Final Year Only', 'No', NULL, NULL, 'Talk'),
+
+(4, 'Web Dev 101', '2025-05-18', 'Learn basic HTML, CSS, JS.',
+ '10:00:00', '13:00:00', 'Room 105', 'Scheduled', 'Offline', 120,
+ 'All Students', 'No', NULL, NULL, 'Technical'),
+
+(5, 'Resume Building', '2025-05-20', 'Improve your resume with expert tips.',
+ '13:00:00', '14:30:00', 'Online', 'Scheduled', 'Online', 300,
+ 'Final Year Students', 'No', NULL, NULL, 'Career'),
+
+-- Paid Events
+(6, 'Cloud Computing Bootcamp', '2025-05-22', 'Deep dive into AWS & Azure.',
+ '09:00:00', '17:00:00', 'Lab 3', 'Scheduled', 'Offline', 60,
+ 'CS/IT Branch Only', 'Yes', 250.00, 0xBADA55, 'Technical'),
+
+(2, 'Graphic Design Contest', '2025-05-25', 'Compete to design the best poster.',
+ '10:30:00', '12:30:00', 'Studio', 'Scheduled', 'Offline', 50,
+ 'All Years', 'Yes', 50.00, 0xC0FFEE, 'Competition'),
+
+-- Free Event
+(5, 'Club Orientation', '2025-05-28', 'Get to know the different clubs.',
+ '16:00:00', '17:30:00', 'Main Auditorium', 'Scheduled', 'Offline', 400,
+ 'First Years', 'No', NULL, NULL, 'Orientation');
+
+ -- Insert 80 students
+DECLARE @i INT = 1;
+WHILE @i <= 80
+BEGIN
+    DECLARE @PRN VARCHAR(20) = CONCAT('PRN', FORMAT(@i, '0000'));
+    DECLARE @Name VARCHAR(100) = CONCAT('Student_', @i);
+    DECLARE @Departments TABLE (Dept VARCHAR(50));
+    INSERT INTO @Departments VALUES ('Computer'), ('IT'), ('ENTC'), ('Mechanical'), ('Civil');
+    DECLARE @Dept VARCHAR(50);
+    SELECT TOP 1 @Dept = Dept FROM @Departments ORDER BY NEWID();
+
+    DECLARE @Year INT = 1 + ((@i - 1) / 20); -- 20 students per year
+    DECLARE @Div CHAR(1) = CHAR(ASCII('A') + ((@i - 1) % 3)); -- A, B, C
+    DECLARE @Batch VARCHAR(2) = CHAR(ASCII('B') + ((@i - 1) % 2)); -- B, C
+    DECLARE @Email VARCHAR(100) = CONCAT('student', @i, '@college.edu');
+    DECLARE @Contact VARCHAR(10) = CONCAT('9', FORMAT(@i, '000000000'));
+    DECLARE @Password VARCHAR(100) = 'Password123';
+
+    INSERT INTO Student (PRN, Name, Department, Year, Div, Batch, Email, Contact, Password)
+    VALUES (@PRN, @Name, @Dept, @Year, @Div, @Batch, @Email, @Contact, @Password);
+
+    SET @i = @i + 1;
+END
+
+-- Registering and recording attendance for Event ID 2 (AI Workshop)
+-- 30 registrations, 25 attended
+DECLARE @i INT = 1;
+WHILE @i <= 30
+BEGIN
+    DECLARE @PRN VARCHAR(20) = CONCAT('PRN', FORMAT(1 + @i % 80, '0000'));
+    DECLARE @TxnID VARCHAR(100) = CASE WHEN @i <= 25 THEN CONCAT('TXN_EVT2_', @i) ELSE NULL END;
+    DECLARE @Screenshot VARBINARY(MAX) = CASE WHEN @TxnID IS NOT NULL THEN 0x01020304 ELSE NULL END;
+
+    INSERT INTO Event_Registration (event_id, student_id, transaction_id, payment_screenshot)
+    VALUES (2, @PRN, @TxnID, @Screenshot);
+
+    IF @i <= 25
+    BEGIN
+        INSERT INTO Attendance (event_registration_id, status)
+        VALUES (SCOPE_IDENTITY(), 'Present');
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Attendance (event_registration_id, status)
+        VALUES (SCOPE_IDENTITY(), 'Absent');
+    END
+
+    SET @i = @i + 1;
+END
+
+-- Unpaid Event
+DECLARE @j INT = 1;
+WHILE @j <= 20
+BEGIN
+    DECLARE @PRN VARCHAR(20) = CONCAT('PRN', FORMAT(21 + @j % 80, '0000'));
+
+    INSERT INTO Event_Registration (event_id, student_id, transaction_id, payment_screenshot)
+    VALUES (5, @PRN, NULL, NULL);
+
+    INSERT INTO Attendance (event_registration_id, status)
+    VALUES (SCOPE_IDENTITY(), CASE WHEN @j <= 15 THEN 'Present' ELSE 'Absent' END);
+
+    SET @j = @j + 1;
+END

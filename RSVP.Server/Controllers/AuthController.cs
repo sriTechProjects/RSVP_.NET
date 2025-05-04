@@ -6,8 +6,6 @@ using RSVP.Server.DTOs;
 using RSVP.Server.Services;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace RSVP.Server.Controllers

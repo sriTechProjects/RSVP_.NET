@@ -8,6 +8,8 @@ import CreateNewEventForm from "../../Components/organiser_events_components/Cre
 import DeleteEventModal from "../../Components/organiser_events_components/DeleteEventModal";
 import EditEventDetails from "../../Components/organiser_events_components/EditEventDetails";
 import EventDetailsComponent from "../../Components/organiser_events_components/EventDetailsComponent";
+import { useEffect } from "react";
+import axios from "axios"; // ensure axios is installed
 
 const ITEMS_PER_PAGE = 10;
 
@@ -133,12 +135,29 @@ const OrganiserEvents = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedEvents = events.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get("http://localhost:5179/event"); // adjust base URL if needed
+        setEvents(response.data);
+        console.log("Fetched events:", response.data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+  
+    fetchEvents();
+  }, []);
+  
+
   const handleDelete = () => {
     setDeleteEvent();
     setEvents((prev) => prev.filter((p) => p.id !== deleteEventId));
     setIsDeleteModalOpen(false);
     setDeleteEventId(null);
   };
+
+
 
   const handleEditProduct = () => {};
   return (
@@ -195,20 +214,20 @@ const OrganiserEvents = () => {
         <tbody>
           {displayedEvents.map((event, index) => (
             <tr
-              key={event.id}
+              key={event.eventId}
               className="border-b border-gray-200 transition text-sm"
             >
               <td className="py-3 px-5 text-center">
                 {startIndex + index + 1}
               </td>
-              <td className="py-3 px-5 text-center">{event.name}</td>
-              <td className="py-3 px-5 text-center">{event.category}</td>
-              <td className="py-3 px-5 text-center">{event.date}</td>
-              <td className="py-3 px-5 text-center">{event.venue}</td>
+              <td className="py-3 px-5 text-center">{event.eventName}</td>
+              <td className="py-3 px-5 text-center">{event.eventCategory}</td>
+              <td className="py-3 px-5 text-center">{event.eventDate}</td>
+              <td className="py-3 px-5 text-center">{event.eventVenue}</td>
               <td className="py-3 px-5 text-center">
                 <p
                   className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(
-                    event.status
+                    event.eventStatus                    
                   )}`}
                 >
                   {event.status}
@@ -221,7 +240,7 @@ const OrganiserEvents = () => {
                   onClick={
                     () => {
                       setIsEventDetailOpen(true)
-                      setSelectedEvent(event)
+                      setSelectedEvent(event.eventId)
                     }}
                 >
                   <FaRegEye />
@@ -314,7 +333,7 @@ const OrganiserEvents = () => {
 
       {isEventDetailOpen && (
         <EventDetailsComponent
-          event={selectedEvent}
+          eventId={selectedEvent}
           onClose={() => setIsEventDetailOpen(false)}
         />
       )}

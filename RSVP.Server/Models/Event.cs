@@ -35,6 +35,8 @@ public partial class Event
 
     public byte[]? EventQr { get; set; }
 
+    public string? EventCategory { get; set; }
+
     public virtual ICollection<EventRegistration> EventRegistrations { get; set; } = new List<EventRegistration>();
 
     public virtual Organisation? Org { get; set; }

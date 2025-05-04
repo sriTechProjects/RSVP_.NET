@@ -98,6 +98,10 @@ public partial class RsvpDbContext : DbContext
             entity.Property(e => e.EventAmount)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("event_amount");
+            entity.Property(e => e.EventCategory)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("event_category");
             entity.Property(e => e.EventDate).HasColumnName("event_date");
             entity.Property(e => e.EventDescription)
                 .HasColumnType("text")
