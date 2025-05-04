@@ -1,17 +1,21 @@
-using Microsoft.AspNetCore.Identity;
+// using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RSVP.Server.Models;
+using RSVP.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Commented DB context until it exists again
 builder.Services.AddDbContext<RsvpDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
+
+builder.Services.AddMemoryCache();
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -29,12 +33,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<EmailService>();
+
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles(); // Ensure static files are served
 
-// Ensure database is created (bypassing migrations)
+// Temporarily skip DB EnsureCreated
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<RsvpDbContext>();
@@ -47,6 +54,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 app.UseHttpsRedirection();
 

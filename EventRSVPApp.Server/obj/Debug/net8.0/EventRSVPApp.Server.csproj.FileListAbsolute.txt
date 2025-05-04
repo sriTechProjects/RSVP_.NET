@@ -1,9 +1,0 @@
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.csproj.AssemblyReference.cache
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\spa.proxy.json
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.GeneratedMSBuildEditorConfig.editorconfig
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.AssemblyInfoInputs.cache
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.AssemblyInfo.cs
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.csproj.CoreCompileInputs.cache
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.MvcApplicationPartsAssemblyInfo.cs
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.MvcApplicationPartsAssemblyInfo.cache
-D:\Final_Projects\RSVP\EventRSVPApp.Server\obj\Debug\net8.0\EventRSVPApp.Server.sourcelink.json

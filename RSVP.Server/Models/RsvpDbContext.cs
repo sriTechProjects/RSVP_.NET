@@ -15,15 +15,19 @@ public partial class RsvpDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Booking> Bookings { get; set; }
+    public virtual DbSet<Attendance> Attendances { get; set; }
 
-    public virtual DbSet<EventTable> EventTables { get; set; }
+    public virtual DbSet<Club> Clubs { get; set; }
 
-    public virtual DbSet<Organization> Organizations { get; set; }
+    public virtual DbSet<Event> Events { get; set; }
+
+    public virtual DbSet<EventRegistration> EventRegistrations { get; set; }
+
+    public virtual DbSet<Organisation> Organisations { get; set; }
+
+    public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<UserCredential> UserCredentials { get; set; }
-
-    public virtual DbSet<UserTable> UserTables { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -31,86 +35,210 @@ public partial class RsvpDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Booking>(entity =>
+        modelBuilder.Entity<Attendance>(entity =>
         {
-            entity.HasKey(e => e.BookingId).HasName("PK__Booking__5DE3A5B10854EB57");
+            entity.HasKey(e => e.AttendanceId).HasName("PK__Attendan__20D6A9681696933F");
 
-            entity.ToTable("Booking");
+            entity.ToTable("Attendance");
 
-            entity.Property(e => e.BookingId).HasColumnName("booking_id");
-            entity.Property(e => e.BookedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnName("booked_at");
-            entity.Property(e => e.EventId).HasColumnName("event_id");
+            entity.HasIndex(e => e.EventRegistrationId, "UQ__Attendan__204276F51E0C45A2").IsUnique();
+
+            entity.Property(e => e.AttendanceId).HasColumnName("attendance_id");
+            entity.Property(e => e.EventRegistrationId).HasColumnName("event_registration_id");
             entity.Property(e => e.Status)
                 .HasMaxLength(10)
                 .IsUnicode(false)
-                .IsFixedLength()
                 .HasColumnName("status");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.Event).WithMany(p => p.Bookings)
-                .HasForeignKey(d => d.EventId)
-                .HasConstraintName("FK_Booking_Event");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Bookings)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Booking_User");
+            entity.HasOne(d => d.EventRegistration).WithOne(p => p.Attendance)
+                .HasForeignKey<Attendance>(d => d.EventRegistrationId)
+                .HasConstraintName("FK__Attendanc__event__0880433F");
         });
 
-        modelBuilder.Entity<EventTable>(entity =>
+        modelBuilder.Entity<Club>(entity =>
         {
-            entity.HasKey(e => e.EventId).HasName("PK__EventTab__2370F727ED11ECB6");
+            entity.HasKey(e => e.ClubId).HasName("PK__Club__BCAD3DD90E16358F");
 
-            entity.ToTable("EventTable");
+            entity.ToTable("Club");
 
-            entity.Property(e => e.EventId).HasColumnName("event_id");
-            entity.Property(e => e.Capacity).HasColumnName("capacity");
-            entity.Property(e => e.CreatedAt)
+            entity.Property(e => e.ClubId).HasColumnName("club_id");
+            entity.Property(e => e.ClubContact)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("club_contact");
+            entity.Property(e => e.ClubCreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
-                .HasColumnName("created_at");
+                .HasColumnName("club_createdAt");
+            entity.Property(e => e.ClubDepartment)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("club_department");
+            entity.Property(e => e.ClubEmail)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("club_email");
+            entity.Property(e => e.ClubName)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("club_name");
+            entity.Property(e => e.ClubUpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("club_updatedAt");
+        });
+
+        modelBuilder.Entity<Event>(entity =>
+        {
+            entity.HasKey(e => e.EventId).HasName("PK__Event__2370F727E629DD51");
+
+            entity.ToTable("Event");
+
+            entity.Property(e => e.EventId).HasColumnName("event_id");
+            entity.Property(e => e.EventAmount)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("event_amount");
+            entity.Property(e => e.EventCategory)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("event_category");
             entity.Property(e => e.EventDate).HasColumnName("event_date");
             entity.Property(e => e.EventDescription)
                 .HasColumnType("text")
                 .HasColumnName("event_description");
-            entity.Property(e => e.EventTitle)
-                .HasMaxLength(255)
+            entity.Property(e => e.EventEligibility)
+                .HasMaxLength(100)
                 .IsUnicode(false)
-                .HasColumnName("event_title");
+                .HasColumnName("event_eligibility");
+            entity.Property(e => e.EventEndTime).HasColumnName("event_end_time");
+            entity.Property(e => e.EventMode)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("event_mode");
+            entity.Property(e => e.EventName)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("event_name");
+            entity.Property(e => e.EventNoOfSeats).HasColumnName("event_no_of_seats");
+            entity.Property(e => e.EventPaid)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasColumnName("event_paid");
+            entity.Property(e => e.EventQr).HasColumnName("event_qr");
+            entity.Property(e => e.EventStartTime).HasColumnName("event_start_time");
+            entity.Property(e => e.EventStatus)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("event_status");
             entity.Property(e => e.EventVenue)
-                .HasMaxLength(255)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("event_venue");
             entity.Property(e => e.OrgId).HasColumnName("org_id");
 
-            entity.HasOne(d => d.Org).WithMany(p => p.EventTables)
+            entity.HasOne(d => d.Org).WithMany(p => p.Events)
                 .HasForeignKey(d => d.OrgId)
-                .HasConstraintName("FK_Event_Org");
+                .HasConstraintName("FK__Event__org_id__7EF6D905");
         });
 
-        modelBuilder.Entity<Organization>(entity =>
+        modelBuilder.Entity<EventRegistration>(entity =>
         {
-            entity.HasKey(e => e.OrgId).HasName("PK__Organiza__F6AD80124AA2D012");
+            entity.HasKey(e => e.EventRegId).HasName("PK__Event_Re__117515140124FB22");
 
-            entity.ToTable("Organization");
+            entity.ToTable("Event_Registration");
 
-            entity.HasIndex(e => e.OrgEmail, "UQ__Organiza__73407A92B9400EE5").IsUnique();
+            entity.Property(e => e.EventRegId).HasColumnName("event_reg_id");
+            entity.Property(e => e.EventId).HasColumnName("event_id");
+            entity.Property(e => e.PaymentScreenshot).HasColumnName("payment_screenshot");
+            entity.Property(e => e.StudentId)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("student_id");
+            entity.Property(e => e.TransactionId)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("transaction_id");
+
+            entity.HasOne(d => d.Event).WithMany(p => p.EventRegistrations)
+                .HasForeignKey(d => d.EventId)
+                .HasConstraintName("FK__Event_Reg__event__02C769E9");
+
+            entity.HasOne(d => d.Student).WithMany(p => p.EventRegistrations)
+                .HasForeignKey(d => d.StudentId)
+                .HasConstraintName("FK__Event_Reg__stude__03BB8E22");
+        });
+
+        modelBuilder.Entity<Organisation>(entity =>
+        {
+            entity.HasKey(e => e.OrgId).HasName("PK__Organisa__F6AD801253264259");
+
+            entity.ToTable("Organisation");
 
             entity.Property(e => e.OrgId).HasColumnName("org_id");
+            entity.Property(e => e.ClubId).HasColumnName("club_id");
+            entity.Property(e => e.OrgContact)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("org_contact");
+            entity.Property(e => e.OrgDepartment)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("org_department");
             entity.Property(e => e.OrgEmail)
-                .HasMaxLength(255)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("org_email");
-            entity.Property(e => e.OrgJoining).HasColumnName("org_joining");
             entity.Property(e => e.OrgName)
-                .HasMaxLength(255)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("org_name");
-            entity.Property(e => e.OrgPhoneNo)
-                .HasMaxLength(15)
+            entity.Property(e => e.OrgNoOfEvents).HasColumnName("org_no_of_events");
+            entity.Property(e => e.OrgPassword)
+                .HasMaxLength(100)
                 .IsUnicode(false)
-                .HasColumnName("org_phone_no");
+                .HasColumnName("org_password");
+            entity.Property(e => e.OrgRole)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("org_role");
+
+            entity.HasOne(d => d.Club).WithMany(p => p.Organisations)
+                .HasForeignKey(d => d.ClubId)
+                .HasConstraintName("FK__Organisat__club___7B264821");
+        });
+
+        modelBuilder.Entity<Student>(entity =>
+        {
+            entity.HasKey(e => e.Prn).HasName("PK__Student__C5732E11041F5F09");
+
+            entity.ToTable("Student");
+
+            entity.Property(e => e.Prn)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("PRN");
+            entity.Property(e => e.Batch)
+                .HasMaxLength(2)
+                .IsUnicode(false);
+            entity.Property(e => e.Contact)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.Department)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Div)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength();
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Password)
+                .HasMaxLength(100)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<UserCredential>(entity =>
@@ -130,39 +258,6 @@ public partial class RsvpDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("password");
-        });
-
-        modelBuilder.Entity<UserTable>(entity =>
-        {
-            entity.HasKey(e => e.UserId).HasName("PK__UserTabl__CB9A1CFFC13BC4C7");
-
-            entity.ToTable("UserTable");
-
-            entity.HasIndex(e => e.PhoneNo, "UQ__UserTabl__960F17EFD5380D32").IsUnique();
-
-            entity.Property(e => e.UserId).HasColumnName("userId");
-            entity.Property(e => e.Age).HasColumnName("age");
-            entity.Property(e => e.Firstname)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("firstname");
-            entity.Property(e => e.Lastname)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("lastname");
-            entity.Property(e => e.OrganizationId).HasColumnName("organization_id");
-            entity.Property(e => e.PhoneNo)
-                .HasMaxLength(15)
-                .IsUnicode(false)
-                .HasColumnName("phoneNo");
-            entity.Property(e => e.Role)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("role");
-
-            entity.HasOne(d => d.Organization).WithMany(p => p.UserTables)
-                .HasForeignKey(d => d.OrganizationId)
-                .HasConstraintName("FK_User_Organization");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,4 +1,4 @@
+RSVP.Server/bin
 node_modules
 .env
 .vs/
-.fake
