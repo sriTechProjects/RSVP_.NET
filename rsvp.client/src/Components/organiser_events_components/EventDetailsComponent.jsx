@@ -204,7 +204,7 @@ const EventDetailsComponent = ({ eventId, onClose }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div>  
     </div>
   );
 };

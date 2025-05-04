@@ -61,9 +61,7 @@ const GuestRegistrationPage = () => {
     try {
       const response = await axios.post(
         "http://localhost:5179/auth/register/student",
-        {
           student,
-        }
       );
 
       if (response.status === 200) {

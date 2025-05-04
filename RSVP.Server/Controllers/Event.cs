@@ -6,6 +6,7 @@ using RSVP.Server.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RSVP.Server.DTO;
 
 namespace RSVP.Server.Controllers
 {
@@ -20,11 +21,14 @@ namespace RSVP.Server.Controllers
             _context = context;
         }
 
-        [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<EventDTO>>> GetAllEvents()
+        [HttpGet("by-org")]
+        public async Task<ActionResult<IEnumerable<EventDTO>>> GetEventsByOrgId([FromQuery] int id)
         {
-            var events = await _context.Events
+            var query = _context.Events
                 .Include(e => e.Org)
+                .Where(e => e.OrgId == id);
+
+            var filteredEvents = await query
                 .Select(e => new EventDTO
                 {
                     EventId = e.EventId,
@@ -46,8 +50,10 @@ namespace RSVP.Server.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(events);
+            return Ok(filteredEvents);
         }
+
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetEventById(int id)
@@ -90,6 +96,80 @@ namespace RSVP.Server.Controllers
             };
 
             return Ok(eventDetails);
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateEvent(int id, [FromBody] updateEventDTO dto)
+        {
+            var existingEvent = await _context.Events.FindAsync(id);
+            if (existingEvent == null)
+                return NotFound();
+
+            // Only update the fields listed in the React form
+            existingEvent.EventName = dto.EventName;
+            existingEvent.EventCategory = dto.EventCategory;
+            existingEvent.EventDescription = dto.EventDescription;
+            existingEvent.EventVenue = dto.EventVenue;
+            existingEvent.EventDate = dto.EventDate;
+            existingEvent.EventMode = dto.EventMode;
+            existingEvent.EventStatus = dto.EventStatus;
+            existingEvent.EventStartTime = dto.EventStartTime;
+            existingEvent.EventEndTime = dto.EventEndTime;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateEvent([FromBody] CreateEventDto model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Manual validation of required fields
+            if (string.IsNullOrWhiteSpace(model.EventName) || string.IsNullOrWhiteSpace(model.EventCategory) ||
+                string.IsNullOrWhiteSpace(model.EventDescription) || string.IsNullOrWhiteSpace(model.EventVenue) ||
+                string.IsNullOrWhiteSpace(model.EventDate) || string.IsNullOrWhiteSpace(model.EventMode) ||
+                string.IsNullOrWhiteSpace(model.EventStatus) || string.IsNullOrWhiteSpace(model.EventStartTime) ||
+                string.IsNullOrWhiteSpace(model.EventEndTime))
+            {
+                return BadRequest("All fields are required.");
+            }
+
+            // Parse Date and Time values
+            if (!DateOnly.TryParse(model.EventDate, out var parsedDate))
+                return BadRequest("Invalid date format.");
+
+            if (!TimeOnly.TryParse(model.EventStartTime, out var parsedStartTime) ||
+                !TimeOnly.TryParse(model.EventEndTime, out var parsedEndTime))
+                return BadRequest("Invalid start or end time format.");
+
+            var newEvent = new Event
+            {
+                OrgId = model.OrgId,
+                EventName = model.EventName,
+                EventCategory = model.EventCategory,
+                EventDescription = model.EventDescription,
+                EventVenue = model.EventVenue,
+                EventDate = parsedDate,
+                EventMode = model.EventMode,
+                EventStatus = model.EventStatus,
+                EventStartTime = parsedStartTime,
+                EventEndTime = parsedEndTime,
+
+                // Set these if required later
+                EventPaid = "no",
+                EventAmount = null,
+                EventQr = null,
+                EventNoOfSeats = null,
+                EventEligibility = null
+            };
+
+            _context.Events.Add(newEvent);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Event created successfully", eventDetails = newEvent });
         }
 
 

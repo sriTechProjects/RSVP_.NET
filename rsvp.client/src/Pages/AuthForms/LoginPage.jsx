@@ -11,38 +11,55 @@ import InputFieldComponent from '../../Components/InputFieldComponent'
 import PasswordFieldComponent from '../../Components/PasswordFieldComponent';
 import FormBtn from '../../Components/FormBtn';
 import axios from "axios";
+import { useUser } from "../../context/UserContext"; // adjust path if needed
+
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { setUser } = useUser();
 
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         if (!email || !password) {
             toast.error(email ? "Password field not filled!" : "Email field not filled!");
             return;
         }
-
+    
         try {
             const response = await axios.post(
                 'http://localhost:5179/auth/login',
                 { email, password },
                 { withCredentials: true }
             );
-
+    
             if (response.status === 200) {
+                const userData = response.data;
+                setUser(userData);
                 toast.success("Login successful!");
-                console.log("User Data:", response.data);
-                navigate("/");
+    
+                // Debugging output
+                console.log("User Data:", userData);
+    
+                // Assuming response.data has a field like userData.role
+                const role = userData.role?.toLowerCase();
+    
+                if (role === "guest") {
+                    navigate("/");
+                } else if (role === "organization" || role === "organisation") {
+                    navigate("/organiser");
+                } else {
+                    toast.error("Unknown user role!");
+                }
             }
         } catch (error) {
             console.error("Login Error:", error.response?.data || error.message);
             toast.error(error.response?.data?.message || "Login failed! Try again.");
         }
-    };
+    };    
 
 
     return (

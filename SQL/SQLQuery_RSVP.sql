@@ -258,3 +258,8 @@ BEGIN
 
     SET @j = @j + 1;
 END
+
+
+select * from Organisation;
+select * from Event;
+

@@ -12,6 +12,7 @@ import EventInfoTags from "../../Components/EventInfoTags";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useEffect } from "react";
 import axios from "axios"; // ensure axios is installed
+import { useUser } from "../../context/UserContext"; // adjust path if needed
 
 const ITEMS_PER_PAGE = 10;
 
@@ -137,20 +138,28 @@ const OrganiserEvents = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedEvents = events.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+  const { user } = useUser();
+
   useEffect(() => {
     const fetchEvents = async () => {
+      if (!user) return; // wait until user is available
+      console.log(user);
       try {
-        const response = await axios.get("http://localhost:5179/event"); // adjust base URL if needed
+        const response = await axios.get("http://localhost:5179/event/by-org", {
+          params: { id: user.organisationId },
+          withCredentials: true,
+        });
+
         setEvents(response.data);
+        console.log(response.data);
         console.log("Fetched events:", response.data);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
     };
-  
+
     fetchEvents();
-  }, []);
-  
+  }, [user]);
 
   const handleDelete = () => {
     setDeleteEvent();
@@ -158,8 +167,6 @@ const OrganiserEvents = () => {
     setIsDeleteModalOpen(false);
     setDeleteEventId(null);
   };
-
-
 
   const handleEditProduct = () => {};
   return (
@@ -231,17 +238,17 @@ const OrganiserEvents = () => {
                 <td className="py-3 px-5 text-center">
                   {startIndex + index + 1}
                 </td>
-                <td className="py-3 px-5 text-center">{event.name}</td>
-                <td className="py-3 px-5 text-center">{event.category}</td>
-                <td className="py-3 px-5 text-center">{event.date}</td>
-                <td className="py-3 px-5 text-center">{event.venue}</td>
+                <td className="py-3 px-5 text-center">{event.eventName}</td>
+                <td className="py-3 px-5 text-center">{event.eventCategory}</td>
+                <td className="py-3 px-5 text-center">{event.eventDate}</td>
+                <td className="py-3 px-5 text-center">{event.eventVenue}</td>
                 <td className="py-3 px-5 text-center">
                   <p
                     className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(
                       event.status
                     )}`}
                   >
-                    {event.status}
+                    {event.eventStatus}
                   </p>
                 </td>
                 <td className="py-2 px-5 text-center space-x-2 flex justify-center">
@@ -326,7 +333,7 @@ const OrganiserEvents = () => {
 
         {isEditFormOpen && (
           <EditEventDetails
-            eventDetail={editEvent}
+            eventId={editEvent?.eventId}
             onClose={() => setIsEditFormOpen(false)}
             onSubmit={handleEditProduct}
           />
@@ -343,7 +350,7 @@ const OrganiserEvents = () => {
 
         {isEventDetailOpen && (
           <EventDetailsComponent
-            event={selectedEvent}
+            eventId={selectedEvent.eventId}
             onClose={() => setIsEventDetailOpen(false)}
           />
         )}
